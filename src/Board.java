@@ -1,6 +1,107 @@
+import java.util.HashSet;
+import java.util.Random;
 
 public class Board {
-    private static void showBoard() {
+    // initial game board 
+    private int[][] gameBoardOne = {
+            {0, 5, 8, 0, 0, 0, 0, 4, 0}, 
+            {0, 0, 0, 0, 0, 7, 0, 0, 6}, 
+            {7, 0, 0, 9, 0, 5, 0, 2, 1}, 
+            {0, 4, 2, 6, 0, 9, 0, 0, 0}, 
+            {0, 7, 0, 1, 4, 8, 0, 3, 0}, 
+            {0, 0, 0, 5, 0, 2, 9, 6, 0}, 
+            {6, 9, 0, 2, 0, 3, 0, 0, 8}, 
+            {8, 0, 0, 7, 0, 0, 0, 0, 0},
+            {0, 1, 0, 0, 0, 0, 2, 9, 0}
+            };
+    
+    private int[][] gameBoardTwo = {
+            {6, 0, 0, 0, 4, 0, 1, 0, 0},
+            {0, 4, 3, 0, 6, 0, 0, 0, 0},
+            {0, 7, 1, 0, 0, 0, 8, 0, 4},
+            {0, 8, 0, 0, 0, 9, 0, 0, 0},
+            {0, 3, 0, 5, 0, 6, 0, 2, 0},
+            {0, 0, 0, 8, 0, 0, 0, 4, 0},
+            {1, 0, 7, 0, 0, 0, 2, 8, 0},
+            {0, 0, 0, 0, 7, 0, 5, 9, 0},
+            {0, 0, 2, 0, 8, 0, 0, 0, 7}
+    };
+    
+    /* Game board*/
+    private int[][] board;
+    
+    /* Initial game entry stored by array index e.g. [0][3]*/
+    private HashSet<String> set = new HashSet<>();
+    
+    /**
+     * constructor for Board 
+     * randomly picks a board as new board 
+     */
+    public Board() {
+        Random random = new Random();
+        int rand = random.nextInt(3)+1;
+        switch (rand) {
+        case 1:
+            this.board = gameBoardOne;
+            break;
+        case 2:
+            this.board = gameBoardTwo;
+            break;
+        default:
+            this.board = gameBoardOne;
+            break;
+        }
+    }
+    
+    /**
+     * prints out instructions and board at start of the game 
+     */
+    protected void printBoard() {
+        System.out.println("   1  2  3   4  5  6   7  8  9  ");
+        for(int i=0; i<board.length; i++) {
+            
+            if(i%3 == 0) { // print 3*3 border
+                System.out.println(" |---------+---------+---------|");
+            }
+            
+            // start row
+            String row = ""; 
+            row = row+ (char) ('A'+i); // add letter to row
+            for(int j=0; j<board[0].length; j++) {
+                
+                // "%s| %d  %d' %d'| %d  %d  %d | %d  %d' %d | \n"
+                if(j%3 == 0) {
+                    row = row + "|";
+                }
+                
+                int cellNum = board[i][j]; 
+                if(cellNum == 0) {
+                    row = row + " * ";
+                } else {
+                    // add cell index in board array in string format e.g. [
+                    set.add(Integer.toString(i) + Integer.toString(j)); 
+                    String s = Integer.toString(cellNum);
+                    row = row + " "+s+"'"; 
+                }
+                
+                // add end of row
+                if(j == 8) {
+                    row = row + "|";
+                }
+            } // end for loop
+            
+            // print row
+            System.out.println(row);
+           
+            if(i == 8) { // print last border
+                System.out.println(" |---------+---------+---------|");
+            }
+        }
+    }
+    
+    
+    protected void showInstructionAndBoard() {
+        // print out instructions 
         System.out.println("Welcome to Sudoku.\n\n"
                 + "- To enter a number in a cell, input the cell ID "
                 + "\ni.e. the row letter and column number together "
@@ -12,25 +113,10 @@ public class Board {
                 + "- To restart the game, input \"Restart\" \n"
                 + "- To complete the game after finishing the board, input \"Finish\" \n");
         System.out.println("Have fun playing Sudoku! Here is your initial board");
-        System.out.println("   1  2  3   4  5  6   7  8  9  ");
-        System.out.println(" |---------+---------+---------|");
-        System.out.println("A| *  5' 8'| *  *  * | *  4' * |");
-        System.out.println("B| 1  *  * | *  *  7'| *  *  6'|");
-        System.out.println("C| 7  *  * | 9' *  5'| *  2' 1'|");
-        System.out.println(" |---------+---------+---------|");
-        System.out.println("D| *  4' 2'| 6' *  9'| *  *  * |");
-        System.out.println("E| *  7' * | 1  4  8 | 5  3' * |");
-        System.out.println("F| *  *  * | 5' *  2'| 9' 6' * |");
-        System.out.println(" |---------+---------+---------|");
-        System.out.println("G| 9' 6' * | 2' *  3'| *  1  8'|");
-        System.out.println("H| 8' *  * | 7' *  * | *  *  * |");
-        System.out.println("I| *  1' * | *  *  * | 2' 9' * |");
-        System.out.println(" |---------+---------+---------|");
+        printBoard();
         System.out.println("What is your move? E.g.: A1 8");
     }
     
-//    public static void main(String[] args) {
-//        showBoard();
-//    }
+    
 
 }
