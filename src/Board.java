@@ -29,7 +29,7 @@ public class Board {
     
     /* Game board*/
     private int[][] board;
-    
+
     /* Initial game entry stored by array index e.g. [0][3]*/
     private HashSet<String> set = new HashSet<>();
     
@@ -79,7 +79,7 @@ public class Board {
                     row = row + " * ";
                 } else {
                     // add cell index in board array in string format e.g. [
-                    set.add(Integer.toString(i) + Integer.toString(j)); 
+                    set.add(Integer.toString(i) + Integer.toString(j));
                     String s = Integer.toString(cellNum);
                     row = row + " "+s+"'"; 
                 }
@@ -99,22 +99,20 @@ public class Board {
         }
     }
     
-    
-    protected void showInstructionAndBoard() {
+    protected void printInstructions() {
         // print out instructions 
         System.out.println("Welcome to Sudoku.\n\n"
                 + "- To enter a number in a cell, input the cell ID "
                 + "\ni.e. the row letter and column number together "
                 + "followed by the number you would like to be in the cell"
                 + " E.g. A1 8 \n"
-                + "- To delete a number you entered from a cell, enter \"Undo\" followed by "
-                + "the cell ID. E.g. Undo A1 \n"
-                + "- To swap two cells, input \"Swap\" and both cell IDs. E.g. Swap A1 F6 \n"
-                + "- To restart the game, input \"Restart\" \n"
-                + "- To complete the game after finishing the board, input \"Finish\" \n");
+                + "- To delete a number you entered from a cell, enter \"undo\" followed by "
+                + "the cell ID. E.g. undo A1 \n"
+                + "- To swap two cells, input \"swap\" and both cell IDs. E.g. Swap A1 F6 \n"
+                + "- To get instructions again enter \"help\" \n"
+                + "- To restart the game, input \"restart\" \n"
+                + "- To end the game after completing the board, input \"end\" \n");
         System.out.println("Have fun playing Sudoku! Here is your initial board");
-        printBoard();
-        System.out.println("What is your move? E.g.: A1 8");
     }
     
     
