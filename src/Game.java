@@ -25,17 +25,7 @@ public class Game {
      */
     private static void endGame() {
         // TODO: end game logic
-        System.out.println("Will end game ");
-    }
-    
-    /**
-     * removes number entry in cell 
-     * @args cell ID 
-     */
-    private static boolean undoEntry(String cell) {
-        // TODO: undo cell logic
-        System.out.println("Will remove entry in cell " + cell);
-        return true; 
+        System.out.println("Will end game");
     }
 
     /**
@@ -53,40 +43,31 @@ public class Game {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
         
         while(playing) {
-            System.out.println("\n~Enter your next move [e.g. A1 4]: ");
+            System.out.println("\n~ Enter your next move [e.g. A1 4]: ");
             String move = reader.nextLine();
-            move = move.toLowerCase(); // lower move
+            move = move.toLowerCase();
+            String[] entry = move.split(" ");
             
             // split move
-            // if (len) == 3 : swap (swap A1 B3) 
-            // if (len) == 2 : move (A1 8) OR undo (undo A1) 
-            // if (len) == 1 : restart OR finish OR help
+            // if move.len == 3 : swap (swap A1 B3)
+            // if move.len == 2 : move (A1 8) OR undo (undo A1)
+            // if move.len == 1 : restart OR finish OR help
             // anything else, print wrong input msg, ask for help
-            String[] entry = move.split(" ");
+
             switch (entry.length) {
             case 3:
-                if(entry[0].equals("swap")) {
-                    // TODO: swap cells 
-                    // swap cells in args
-                    System.out.println("Will swap cells " + entry[1] + " and " + entry[2] );
+                if(entry[0].equals("swap")) { // swap entries if possible
+                    board.swap(entry[1], entry[2]);
                 } else {
                     invalidEntry(); 
                 }
                 break;
             case 2:
-                if(entry[0].equals("undo")) {
-                    // undo cell entry for args[1]
-                    Boolean undone = undoEntry(entry[1]);
-                    // TODO: check that undoing entry is possible
-                    // ...
+                if(entry[0].equals("undo")) { // undo cell entry for args[1]
+                    board.undo(entry[1]);
                 } else {
-                    char[] cell = entry[0].toCharArray();
-                    if(cell.length == 2) {
-                        // TODO: read cell and number move
-                        // number to be entered in cell 
-                        int numEntry = Integer.parseInt(entry[1]);
-                        // TODO: do move logic
-                        System.out.println("Will enter " + numEntry + " in cell " + entry[0]);
+                    if(entry[0].length() == 2) {
+                        board.enter(entry[0], Integer.parseInt(entry[1]));
                     } else {
                         invalidEntry();
                     }
@@ -108,7 +89,6 @@ public class Game {
                 break;
             }
         }
-        
         // close at game end
         reader.close();
     }
@@ -118,7 +98,7 @@ public class Game {
      * calls methods that controls game play 
      */
     public static void main(String[] args) {
-        board = new Board();
+        board = new Board(); // get new random game board
         board.printInstructions();
         board.printBoard();
         playGame();
