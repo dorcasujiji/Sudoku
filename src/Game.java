@@ -1,9 +1,5 @@
 import java.util.Scanner;
 
-import com.sun.jndi.toolkit.ctx.StringHeadTail;
-
-import sun.net.www.content.text.plain;
-
 public class Game {
     /* Game board */
     private static Board board;
@@ -47,7 +43,21 @@ public class Game {
             String move = reader.nextLine();
             move = move.toLowerCase();
             String[] entry = move.split(" ");
-            
+            int row, col;
+            char[] index= new char[2];
+
+            if(entry.length == 2) {
+                if(entry[0].length() == 2)
+                    index = entry[0].toCharArray();
+                else
+                    index = entry[1].toCharArray();
+            } else if(entry.length == 3) {
+                index = entry[1].toCharArray();
+            }
+            char rowChar = (char) (index[0] - '1');
+            row = Character.getNumericValue(rowChar);
+            col = Character.getNumericValue(index[1]) - 1;
+
             // split move
             // if move.len == 3 : swap (swap A1 B3)
             // if move.len == 2 : move (A1 8) OR undo (undo A1)
@@ -64,10 +74,10 @@ public class Game {
                 break;
             case 2:
                 if(entry[0].equals("undo")) { // undo cell entry for args[1]
-                    board.undo(entry[1]);
+                    board.undo(row, col);
                 } else {
                     if(entry[0].length() == 2) {
-                        board.enter(entry[0], Integer.parseInt(entry[1]));
+                        board.enter(row, col, Integer.parseInt(entry[1]));
                     } else {
                         invalidEntry();
                     }
