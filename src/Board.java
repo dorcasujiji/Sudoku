@@ -12,7 +12,7 @@ public class Board {
     * set need to be initialized if first time printing board */
     private boolean firstPrint = true;
 
-    // initial game board 
+    /* possible initial game boards */
     private int[][] gameBoardOne = {
             {0, 5, 8, 0, 0, 0, 0, 4, 0}, 
             {0, 0, 0, 0, 0, 7, 0, 0, 6}, 
@@ -145,30 +145,28 @@ public class Board {
     /**
      * deletes cell entry if possible
      * prints error message otherwise
-     * @args index
+     * @param row,col;
      */
-    protected boolean undo(String index) {
+    protected boolean undo(int row, int col) {
         // TODO: undo cell logic
-        System.out.println("Will remove entry in cell " + index);
-        // System.out.println("Error: Cell part of initial board. Entry cannot be undo.");
+        if(isValidCell(row, col)) {
+            board[row][col] = 0;
+            printBoard();
+        } else {
+            System.out.println("Error: Cell cannot be deleted, part of initial board.");
+        }
         return true;
     }
 
     /**
      * enters player's number into board at index if possible
      * prints error msg otherwise
-     * @param index,number
+     * @param row,col,number;
      */
-    protected boolean enter(String index, int number) {
-        char[] indexes = index.toCharArray();
-        char row = (char) (indexes[0] - '1');
-        int rowNum = Character.getNumericValue(row);
-        int colNum = Character.getNumericValue(indexes[1]) - 1;
-
+    protected boolean enter(int row, int col, int number) {
         // adds/changes number if cell is valid
-        // if(isValidCell(Integer.toString(rowNum)+indexes[1])) {
-        if(isValidCell(rowNum, colNum)) {
-            board[rowNum][colNum] = number;
+        if(isValidCell(row, col)) {
+            board[row][col] = number;
             printBoard();
         } else {
             System.out.println("Error: Cell ID is invalid. May be filled in initial board with \' next to it.");
@@ -179,7 +177,7 @@ public class Board {
     /**
      * checks if cell if a valid cell to delete or swap
      * cell entry
-     * @param row,col
+     * @param row,col;
      * @return boolean
      */
     private boolean isValidCell(int row, int col) {
@@ -189,17 +187,6 @@ public class Board {
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * TODO: delete this function
-     * prints set of intially filled cells indexes
-     * for testing purposes
-     */
-    private void printSet() {
-        for(String string: set) {
-            System.out.println(string);
         }
     }
 
