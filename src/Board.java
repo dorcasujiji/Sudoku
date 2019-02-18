@@ -138,7 +138,24 @@ public class Board {
     protected boolean swap(String index1, String index2) {
         // TODO: swap cells
         // swap cells in args
-        System.out.println("Will swap cells " + index1 + " and " + index2 );
+        char[] indexes1 = index1.toCharArray();
+        char row1 = (char) (indexes1[0] - '1');
+        int rowNum = Character.getNumericValue(row1);
+        int colNum = Character.getNumericValue(indexes1[1]) - 1;
+        char[] indexes2 = index2.toCharArray();
+        char row2 = (char) (indexes2[0] - '1');
+        int rowNum2 = Character.getNumericValue(row2);
+        int colNum2 = Character.getNumericValue(indexes2[1]) - 1;
+        if(isValidCell(rowNum, colNum) && isValidCell(rowNum2, colNum2)) {
+            int temp = board[rowNum][colNum];
+            int temp2 = board[rowNum2][colNum2];
+            board[rowNum][colNum] = temp2;
+            board[rowNum2][colNum2] = temp;
+            printBoard();
+        } else {
+            System.out.println("Error: Cell ID is invalid. May be filled in initial board with \' next to it.");
+        }
+        // System.out.println("Will swap cells " + index1 + " and " + index2 );
         return true;
     }
 
