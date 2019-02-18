@@ -104,7 +104,6 @@ public class Board {
                 System.out.println(" |---------+---------+---------|");
             }
         }
-
         // avoid changing set after first time print board
         if(firstPrint)
             firstPrint = false;
@@ -115,7 +114,6 @@ public class Board {
      * or when player enters "help"
      */
     protected void printInstructions() {
-        // print out instructions 
         System.out.println("Welcome to Sudoku.\n\n"
                 + "- To enter a number in a cell, input the cell ID "
                 + "\ni.e. the row letter and column number together "
@@ -135,27 +133,15 @@ public class Board {
      * prints error msg otherwise
      * @args cell1 index, cell2 index
      */
-    protected boolean swap(String index1, String index2) {
-        // TODO: swap cells
-        // swap cells in args
-        char[] indexes1 = index1.toCharArray();
-        char row1 = (char) (indexes1[0] - '1');
-        int rowNum = Character.getNumericValue(row1);
-        int colNum = Character.getNumericValue(indexes1[1]) - 1;
-        char[] indexes2 = index2.toCharArray();
-        char row2 = (char) (indexes2[0] - '1');
-        int rowNum2 = Character.getNumericValue(row2);
-        int colNum2 = Character.getNumericValue(indexes2[1]) - 1;
-        if(isValidCell(rowNum, colNum) && isValidCell(rowNum2, colNum2)) {
-            int temp = board[rowNum][colNum];
-            int temp2 = board[rowNum2][colNum2];
-            board[rowNum][colNum] = temp2;
-            board[rowNum2][colNum2] = temp;
+    protected boolean swap(int row1, int col1, int row2, int col2) {
+        if(isValidCell(row1, col1) && isValidCell(row2, col2)) {
+            int temp = board[row1][col1];
+            board[row1][col1] = board[row2][col2];
+            board[row2][col2] = temp;
             printBoard();
         } else {
-            System.out.println("Error: Cell ID is invalid. May be filled in initial board with \' next to it.");
+            System.out.println("Error: Cell ID is invalid. May be filled in initial board (\' next to entry).");
         }
-        // System.out.println("Will swap cells " + index1 + " and " + index2 );
         return true;
     }
 
@@ -165,7 +151,6 @@ public class Board {
      * @param row,col;
      */
     protected boolean undo(int row, int col) {
-        // TODO: undo cell logic
         if(isValidCell(row, col)) {
             board[row][col] = 0;
             printBoard();
@@ -176,17 +161,18 @@ public class Board {
     }
 
     /**
-     * enters player's number into board at index if possible
+     * enters player's number into board at cell if within board
+     * and not filled in initial board
      * prints error msg otherwise
      * @param row,col,number;
      */
     protected boolean enter(int row, int col, int number) {
-        // adds/changes number if cell is valid
         if(isValidCell(row, col)) {
             board[row][col] = number;
             printBoard();
         } else {
-            System.out.println("Error: Cell ID is invalid. May be filled in initial board with \' next to it.");
+            System.out.println("Error: Cell ID is invalid. " +
+                    "May be filled in initial board with \' next to it.");
         }
         return true;
     }
