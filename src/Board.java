@@ -3,7 +3,8 @@ import java.util.Random;
 
 public class Board {
     /* Game board*/
-    private int[][] board;
+    public int[][] board;
+    public int[][] solution;
 
     /* Initial game entry stored by array index e.g. [0][3]*/
     private HashSet<String> set = new HashSet<>();
@@ -11,6 +12,9 @@ public class Board {
     /* Tracks if the board has been printed before
     * set need to be initialized if first time printing board */
     private boolean firstPrint = true;
+
+    /*tracks which board was picked so we can know what solution to pick*/
+    int boardPicked;
 
     /* possible initial game boards */
     private int[][] gameBoardOne = {
@@ -36,14 +40,36 @@ public class Board {
             {0, 0, 0, 0, 7, 0, 5, 9, 0},
             {0, 0, 2, 0, 8, 0, 0, 0, 7}
     };
-    
+    private int[][] gameBoardThree = {
+            {2, 0, 5, 0, 0, 7, 0, 0, 6},
+            {4, 0, 0, 9, 6, 0, 0, 2, 0},
+            {0, 0, 0, 0, 8, 0, 0, 4, 5},
+            {9, 8, 0, 0, 7, 4, 0, 0, 0},
+            {5, 7, 0, 8, 0, 2, 0, 6, 9},
+            {0, 0, 0, 6, 3, 0, 0, 5, 7},
+            {7, 5, 0, 0, 2, 0, 0, 0, 0},
+            {0, 6, 0, 0, 5, 1, 0, 0, 2},
+            {3, 0, 0, 4, 0, 0, 5, 0, 8}
+    };
+    private int[][] gameBoardThreeSolution = {
+            {2, 3, 5, 1, 4, 7, 9, 8, 6},
+            {4, 1, 8, 9, 6, 5, 7, 2, 3},
+            {6, 9, 7, 2, 8, 3, 1, 4, 5},
+            {9, 8, 6, 5, 7, 4, 2, 3, 1},
+            {5, 7, 3, 8, 1, 2, 4, 6, 9},
+            {1, 4, 2, 6, 3, 9, 8, 5, 7},
+            {7, 5, 9, 3, 2, 8, 6, 1, 4},
+            {8, 6, 4, 7, 5, 1, 3, 9, 2},
+            {3, 2, 1, 4, 9, 6, 5, 7, 8}
+    };
+
     /**
      * constructor for Board 
      * randomly picks a board as new board 
      */
-    public Board() {
-        Random random = new Random();
-        int rand = random.nextInt(3)+1;
+    public Board(int rand) {
+        //remember what rand was so we can find the solution. 
+        this.boardPicked = rand;
         switch (rand) {
         case 1:
             this.board = gameBoardOne;
@@ -51,12 +77,44 @@ public class Board {
         case 2:
             this.board = gameBoardTwo;
             break;
-        default:
-            this.board = gameBoardOne;
+        case 3:
+            this.board = gameBoardThree;
             break;
+        case 6:
+            this.board = gameBoardThreeSolution;
+        //removed the default because it would interfere with getting the solution. 
+        // default:
+        //     this.board = gameBoardOne;
+        //     break;
         }
     }
-
+    protected void printSolution(){
+        System.out.println("   1  2  3   4  5  6   7  8  9  ");
+        for(int i=0; i< board.length; i++){
+            if(i%3 == 0) { // print 3*3 row border
+                System.out.println(" |---------+---------+---------|");
+            }
+            // start row -> "%s| %d  %d' %d'| %d  %d  %d | %d  %d' %d | \n"
+            String row = ""; 
+            row = row+ (char) ('A'+i); // add letter to row
+            for(int j = 0; j<board[0].length; j++){
+                // adds 3*3 column border
+                if(j%3 == 0) {
+                    row = row + "|";
+                }
+                int cellNum = board[i][j];
+                row = row + " " + cellNum +" ";
+                // add row border
+                if(j == 8) {
+                    row = row + "|";
+                }
+            }
+            System.out.println(row); // print row
+            if(i == 8) {            // print last border
+                System.out.println(" |---------+---------+---------|");
+            }
+        }
+    }
     /**
      * prints initial game board at start of game
      * and adds unchangeable cells to set
@@ -205,6 +263,17 @@ public class Board {
         } else {
             return false;
         }
+    }
+    public boolean isEqual(int[][] board1, int[][] board2){
+        for (int i = 0; i < board1.length; i++){
+            for (int j = 0; j<board[0].length; j++){
+                if (board1[i][j] != board2[i][j]){
+                    return false;
+                }
+            }
+        }
+        return true;
+
     }
 
 

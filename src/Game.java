@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.Random;
+import java.util.Arrays; 
 
 public class Game {
     /* Game board */
@@ -11,17 +13,33 @@ public class Game {
      * restarts game with new board and set
      */
     private static void restartGame() {
-        // TODO: restart game logic
-        System.out.println("Will restart game");
+        Random random = new Random();
+        int rand = (random.nextInt(100)+1) % 4;
+        board = new Board(3); // get new random game board
+        board.printInstructions();
+        board.printBoard();
+        playGame();
+        // System.out.println("Will restart game");
     }
 
     /**
      * ends game and checks if player completed
      * the game accurately
      */
-    private static void endGame() {
-        // TODO: end game logic
-        System.out.println("Will end game");
+    private static void endGame(Board board) {
+        int solutionNum = board.boardPicked + 3;
+        int[][] boardByUser = board.board;
+        Board solutionBoard = new Board(solutionNum);
+        int[][] solutionBoardByComp = solutionBoard.board;
+        boolean isEqual = board.isEqual(solutionBoardByComp, boardByUser);
+        if (isEqual){
+            System.out.println("You won!!!!!");
+        }else{
+            System.out.println("Sorry, here is the solution: ");
+            solutionBoard.printSolution();
+        }
+        System.out.println(isEqual);
+        playing = false;
     }
 
     /**
@@ -87,7 +105,7 @@ public class Game {
                 if(entry[0].equals("restart")) {
                     restartGame();
                 } else if(entry[0].equals("end")) {
-                    endGame();
+                    endGame(board);
                 } else if(entry[0].equals("help")) {
                     board.printInstructions();
                 } else {
@@ -108,7 +126,10 @@ public class Game {
      * calls methods that controls game play 
      */
     public static void main(String[] args) {
-        board = new Board(); // get new random game board
+        Random random = new Random();
+        int rand = (random.nextInt(50)%3)+1;
+        board = new Board(rand); // get new random game board
+        // System.out.println(rand);
         board.printInstructions();
         board.printBoard();
         playGame();
