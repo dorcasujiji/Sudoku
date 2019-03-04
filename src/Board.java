@@ -164,15 +164,13 @@ public class Board {
      */
     protected void printInstructions() {
         System.out.println("Welcome to Sudoku.\n\n"
-                + "Remember to leave a space between commands. \n"
-                + "- To enter a number use cellID + number "
-                + "E.g. A1 8\n"
-                + "- To enter into multiple cells use \"enter\" + cell ID + number \n"
-                + " E.g. enter A1 1 B4 6 \n"
-                + "- To delete a cell entry use \"undo\" + cell ID "
-                + "E.g. undo A1 \n"
-                + "- To swap two cells, use \"swap\" + cellID + cellID. \n"
-                + "E.g. Swap A1 F6 \n"
+                + "The goal of the game is to complete the board by entering numbers 1-9\n"
+                + "without repeating numbers in a row, column or 3*3 box. \n\n"
+                + "The following are the game's commands. Remember to leave spaces between words. \n"
+                + "- To enter a number use cellID + number. E.g. A1 8\n"
+                + "- To enter into multiple cells use \"enter\" + cell ID + number. E.g. enter A1 1 B4 6 \n"
+                + "- To delete a cell entry use \"undo\" + cell ID. E.g. undo A1 \n"
+                + "- To swap two cells, use \"swap\" + cellID + cellID. E.g. Swap A1 F6 \n"
                 + "- To get instructions again use the \"help\" command\n"
                 + "- To restart the game, use the \"restart\" command\n"
                 + "- To end the game after completing the board, use \"end\" command \n");
@@ -249,12 +247,11 @@ public class Board {
      * @param row,col,number;
      */
     protected boolean enter(int row, int col, int number) {
-        if(isValidCell(row, col)) {
+        if(isValidCell(row, col) && number >= 1 && number <= 9) {
             board[row][col] = number;
             printBoard();
         } else {
-            System.out.println("Error: Cell ID is invalid. " +
-                    "May be filled in initial board with \' next to it.");
+            System.out.println("Error: Filled initial cell or Entry not between 1-9.");
         }
         return true;
     }
@@ -263,7 +260,7 @@ public class Board {
      * checks if cell if a valid cell to delete or swap
      * cell entry
      * @param row,col;
-     * @return boolean
+ G9    * @return boolean
      */
     private boolean isValidCell(int row, int col) {
         if(0 <= row && 8 >= row && 0 <= col && 8 >= col) {

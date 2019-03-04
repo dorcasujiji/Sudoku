@@ -77,13 +77,21 @@ public class Game {
                         invalidEntry();
                     break;
                 case "swap":
-                    int[] index1 = getIndex(entry[1]);
-                    int[] index2 = getIndex(entry[2]);
-                    board.swap(index1[0], index1[1], index2[0], index2[1]);
+                    if(entry.length == 3) {
+                        int[] index1 = getIndex(entry[1]);
+                        int[] index2 = getIndex(entry[2]);
+                        board.swap(index1[0], index1[1], index2[0], index2[1]);
+                    } else {
+                        invalidEntry();
+                    }
                     break;
                 case "undo":
-                    int[] index = getIndex(entry[1]);
-                    board.undo(index[0], index[1]);
+                    if(entry.length == 2) {
+                        int[] index = getIndex(entry[1]);
+                        board.undo(index[0], index[1]);
+                    } else {
+                        invalidEntry();
+                    }
                     break;
                 case "help":
                     board.printInstructions();
